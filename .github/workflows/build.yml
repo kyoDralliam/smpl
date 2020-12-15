@@ -27,6 +27,7 @@ jobs:
           fetch-depth: 1
 
       - run: opam repo add coq-released https://coq.inria.fr/opam/released
+      - run: opam repo add coq-core-dev https://coq.inria.fr/opam/core-dev
       - run: opam install . --deps-only --with-doc --with-test
 
       - run: opam exec -- make -j 2 all
