@@ -178,7 +178,7 @@ let call_tac glob_tac args =
      let ist = { lfun = Id.Map.add cont glob_tac_val bindings;
 		 extra = TacStore.empty;
      poly = true; } in
-     Tacinterp.eval_tactic_ist ist (TacArg (CAst.make tac)))
+     Tacinterp.eval_tactic_ist ist (CAst.make (TacArg tac)))
 
 let smpl_tac_entry entry args =
   call_tac entry.tactic args
