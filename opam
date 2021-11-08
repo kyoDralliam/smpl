@@ -12,7 +12,7 @@ build: [make "-j%{jobs}%"]
 install: [make "install"]
 depends: [
   "ocaml"
-  "coq" { = "dev" }
+  "coq" { >= "8.14" }
 ]
 synopsis: "Smpl: An Extensible Tactic for Coq"
 description: """
