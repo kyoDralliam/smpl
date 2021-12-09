@@ -50,7 +50,7 @@ let _ = Summary.declare_summary "smpl"
 
 let intern_smpl_create name db =
  try let _ = StringMap.find name (!smpl_dbs) in
-     CErrors.user_err ~hdr:"Smpl" (str "Smpl Database " ++ str name ++ str " already exists.")
+     CErrors.user_err (str "Smpl Database " ++ str name ++ str " already exists.")
  with Not_found -> smpl_dbs := StringMap.add name db (!smpl_dbs)
 
 let rec insert e l =
@@ -66,7 +66,7 @@ let intern_smpl_add entry name =
   try let db = StringMap.find name (!smpl_dbs) in
       let db' = { db with queue = insert entry db.queue } in
       smpl_dbs := StringMap.add name db' (!smpl_dbs)
-  with Not_found -> CErrors.user_err ~hdr:"Smpl" (str "Unknown Smpl Database " ++ str name ++ str ".")
+  with Not_found -> CErrors.user_err (str "Unknown Smpl Database " ++ str name ++ str ".")
 
 type smpl_action =
   | CreateDb of string * smpl_db
@@ -142,7 +142,7 @@ let smpl_print_entry e =
 
 let smpl_db_exists db_name =
   try let db = StringMap.find db_name (!smpl_dbs) in db
-  with Not_found -> CErrors.user_err ~hdr:"Smpl"
+  with Not_found -> CErrors.user_err 
 				     (str "Unknown Smpl Database " ++ str db_name ++ str ".")
 
 let smpl_print db_name =
@@ -151,7 +151,7 @@ let smpl_print db_name =
 				   str " "  ++ pr_progress db.progress_default ++ str ".") in
       let _ = Feedback.msg_info (str "Tactics in priority order:") in
       List.iter (smpl_print_entry) db.queue; ()
-  with Not_found -> CErrors.user_err ~hdr:"Smpl"
+  with Not_found -> CErrors.user_err 
 				     (str "Unknown Smpl Database " ++ str db_name ++ str ".")
 
 let smpl_print_dbs () =
@@ -192,16 +192,16 @@ let mk_smpl_tac db_name db args =
   let rec f l =
     match l with
     | e::l -> if bool_unopt e.require_progress db.progress_default then
-		Tacticals.New.tclORELSE (smpl_tac_entry e args) (f l)
+		Tacticals.tclORELSE (smpl_tac_entry e args) (f l)
 	      else
-		Tacticals.New.tclORELSE0 (smpl_tac_entry e args) (f l)
-    | _ -> Tacticals.New.tclFAIL 0 (str "smpl " ++ str db_name ++ str ": no tactic applies")
+		Tacticals.tclORELSE0 (smpl_tac_entry e args) (f l)
+    | _ -> Tacticals.tclFAIL 0 (str "smpl " ++ str db_name ++ str ": no tactic applies")
   in f db.queue
 
 let smpl_tac db_name args =
   try let db = StringMap.find db_name (!smpl_dbs) in
       mk_smpl_tac db_name db args
-  with Not_found -> Tacticals.New.tclFAIL 0 (str "smpl: db " ++ str db_name ++ str " not found")
+  with Not_found -> Tacticals.tclFAIL 0 (str "smpl: db " ++ str db_name ++ str " not found")
 
 (*** Syntax Extensions ***)
 
