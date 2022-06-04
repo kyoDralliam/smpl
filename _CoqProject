@@ -1,3 +1,4 @@
+src/META.smpl
 -R theories smpl
 -I src
 

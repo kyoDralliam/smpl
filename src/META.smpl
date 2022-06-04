@@ -1,0 +1,11 @@
+package "smpl" (
+    directory = "."
+    version = "dev"
+    description = "smpl plugin"
+    requires = "coq-core.plugins.ltac"
+    archive(byte) = "smpl_plugin.cma"
+    archive(native) = "smpl_plugin.cmxa"
+    plugin(byte) = "smpl_plugin.cma"
+    plugin(native) = "smpl_plugin.cmxs"
+)
+directory = "."

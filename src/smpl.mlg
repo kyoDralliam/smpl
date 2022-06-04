@@ -1,6 +1,6 @@
 (* Written for LVC by Sigurd Schneider (2016-2017) *)
 
-DECLARE PLUGIN "smpl_plugin"
+DECLARE PLUGIN "smpl.smpl"
 
 {
 
@@ -75,14 +75,14 @@ type smpl_action =
 (*** Library interface ***)
 (* This code handles loading through Require (Import) *)
 
-let load_smpl_action _ (_, act) =
+let load_smpl_action _ act =
   match act with
   | CreateDb (db_name, db) ->
      intern_smpl_create db_name db
   | AddTac (db_name, entry) -> intern_smpl_add entry db_name
 
-let cache_smpl_action (kn, act) =
-  load_smpl_action 1 (kn, act)
+let cache_smpl_action act =
+  load_smpl_action 1 act
 
 let subst_smpl_db_entry subst entry =
   let tac' = Tacsubst.subst_tactic subst entry.tactic in
@@ -98,7 +98,7 @@ let subst_smpl_action (subst,act) =
   | AddTac (db, entry) ->
      AddTac (db, subst_smpl_db_entry subst entry)
 
-let classify_smpl_action act = Substitute act
+let classify_smpl_action _ = Substitute
 
 let inSmpl : smpl_action -> obj =
   declare_object {(default_object "SMPL") with
@@ -114,11 +114,11 @@ let smpl_add n_opt tac req_progress_opt db_name =
     | Some n -> n
     | None -> 100 in
   let act = AddTac (db_name, {priority = n; tactic = tac; require_progress = req_progress_opt }) in
-  Lib.add_anonymous_leaf (inSmpl act)
+  Lib.add_leaf (inSmpl act)
 
 let smpl_create db_name db =
   let act = CreateDb (db_name, db) in
-  Lib.add_anonymous_leaf (inSmpl act)
+  Lib.add_leaf (inSmpl act)
 
 (*** Printing ***)
 
@@ -195,13 +195,13 @@ let mk_smpl_tac db_name db args =
 		Tacticals.tclORELSE (smpl_tac_entry e args) (f l)
 	      else
 		Tacticals.tclORELSE0 (smpl_tac_entry e args) (f l)
-    | _ -> Tacticals.tclFAIL 0 (str "smpl " ++ str db_name ++ str ": no tactic applies")
+    | _ -> Tacticals.tclFAIL (str "smpl " ++ str db_name ++ str ": no tactic applies")
   in f db.queue
 
 let smpl_tac db_name args =
   try let db = StringMap.find db_name (!smpl_dbs) in
       mk_smpl_tac db_name db args
-  with Not_found -> Tacticals.tclFAIL 0 (str "smpl: db " ++ str db_name ++ str " not found")
+  with Not_found -> Tacticals.tclFAIL (str "smpl: db " ++ str db_name ++ str " not found")
 
 (*** Syntax Extensions ***)
 
