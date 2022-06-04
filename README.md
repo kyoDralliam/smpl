@@ -1,3 +1,12 @@
+# Temporary Note
+
+This is the development version of the smpl plugin for Coq `8.16+rc1`.
+For installation use
+```
+opam pin add -k git smpl.dev "https://github.com/uds-psl/smpl.git#coq-8.16"
+```
+This note will be removed upon proper `8.16` release. Remainder of the readme is outdated.
+
 # Coq Plugin smpl
 ![Test compilation](https://github.com/uds-psl/smpl/workflows/Test%20compilation/badge.svg)
 
