@@ -1,12 +1,3 @@
-# Temporary Note
-
-This is the development version of the smpl plugin for Coq `8.16`.
-For installation use
-```
-opam pin add -k git smpl.dev "https://github.com/uds-psl/smpl.git#coq-8.16"
-```
-This note will be removed upon proper `8.16` release. Remainder of the readme is outdated.
-
 # Coq Plugin smpl
 ![Test compilation](https://github.com/uds-psl/smpl/workflows/Test%20compilation/badge.svg)
 
@@ -36,12 +27,12 @@ The plugin is available for various versions of Coq in the different branches of
 ## Installation
 
 We provide an opam repository from which smpl can be installed. 
-To install from the opam repository for Coq 8.10.2 and onwards use the following 
+To install from the opam repository for Coq 8.16 and onwards use the following 
 commands:
 
-    opam repo add psl-opam-repository https://github.com/uds-psl/psl-opam-repository.git
+    opam repo add coq-released https://coq.inria.fr/opam/released
     opam update
-    opam install coq-smpl.8.11
+    opam install coq-smpl.8.16
 
 ### Manual Installation
 
@@ -67,11 +58,9 @@ examples.
 If you want to place smpl's sources in your project, you can place it
 in a directory of your project.
 
-    git clone -v coq-8.11 https://github.com/uds-psl/smpl.git
+    git clone -v coq-8.16 https://github.com/uds-psl/smpl.git
     cd smpl
     make
-
-if you are already using Coq 8.7+beta1.
 
 Enter the cloned directory and build smpl:
 
