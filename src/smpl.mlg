@@ -44,7 +44,8 @@ let unfreeze t = smpl_dbs := t
 let _ = Summary.declare_summary "smpl"
 	{ Summary.freeze_function   = freeze;
 	  Summary.unfreeze_function = unfreeze;
-	  Summary.init_function     = init }
+	  Summary.init_function     = init ;
+    Summary.stage             = Summary.Stage.Synterp }
 
 (*** Database actions ***)
 
