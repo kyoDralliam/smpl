@@ -38,7 +38,7 @@ let smpl_dbs = ref (StringMap.empty : smpl_db StringMap.t)
 (*** Summary ***)
 
 let init    () = smpl_dbs := StringMap.empty
-let freeze   ~marshallable = !smpl_dbs
+let freeze  () = !smpl_dbs
 let unfreeze t = smpl_dbs := t
 
 let _ = Summary.declare_summary "smpl"
